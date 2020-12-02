@@ -6,12 +6,8 @@ An attempt to implement the famous compression algorithm by Lempel-Ziv-Welch. Th
 -  Install Dependencies ``` pip install rquirements.txt ``` 
 -  Run ``` python app.py ```  from the correct directory
 -  For compressed image:  
-    * ```compressor = LZW('''Path to Image''')```  
-    * ```compressor.compress()```  
--  For decompression:  
-    * ```decompressor = LZW('''Path to LZW File''')```  
-    * ```decompressor.decompress()```  
+    * Check your compressed file directory after clicking compress - .lzw extension file will be available
+-  For decompressed files:  
+    * check   Decompressed file folder 
+-  Your Uploads are present in static/uploads folder.
     
-## Further Improvements
--  As of now, the compression only works for 8-Bit Images with JPG format.
--  The decompressed image sometimes explodes in size than what it originally was before being compressed.

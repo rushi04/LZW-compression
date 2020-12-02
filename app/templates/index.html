@@ -5,17 +5,21 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
 <body>
-	<h1>Image Compress hone jaa raha hai saavdhan</h1>
+	<h1>LZW Image Compression</h1>
 	<input type="file" id="fileupload" name="image" accept="image/*"/>
-	<img id="blah" src="#" alt="your image" />
     <button id="compress">Compress</button>
     <button id="download" disabled = true>Download compressed file</button>
-	<div class="div_imagetranscrits"></div>
+    <img id="blah" src="#" alt="your image" style = "width: 500px;"/>
+	<div class="div_imagetranscrits">
 
-	<script type="text/javascript">
+    </div>
+
+    <script type="text/javascript">
+        var filename ="";
 		const handleImageUpload = event => {
 			const files = event.target.files;
-
+            console.log(files[0].name.split('.')[0]);
+            filename = files[0].name.split('.')[0];
 			if (event.target.files && event.target.files[0]) {
 			    var reader = new FileReader();
 			    reader.onload = function(e) {
@@ -30,23 +34,35 @@
 		});
 
 		$(document).ready(function() {
+            $('#download').click(function(){
+                $.ajax({
+					type: 'GET',
+					url: '/download/',
+					data: {'filename':filename},
+					success: function(data){
+						console.log("response received success");    
+					},
+					cache: false,
+                    contentType: false,
+                    processData: false,
+                    })
+            })
 			$("#compress").click(function(){
 				if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-          alert('The File APIs are not fully supported in this browser.');
-          return;
-        }
-
+                alert('The File APIs are not fully supported in this browser.');
+                return;
+                }
 				var input = document.getElementById('fileupload');
 				if (!input) {
-          alert("Um, couldn't find the fileinput element.");
-        }
-        else if (!input.files) {
-          alert("This browser doesn't seem to support the `files` property of file inputs.");
-        }
-        else if (!input.files[0]) {
-          alert("Please select a file before clicking 'Load'");
-        }
-        const formData = new FormData();
+                alert("Um, couldn't find the fileinput element.");
+                }
+                else if (!input.files) {
+                alert("This browser doesn't seem to support the `files` property of file inputs.");
+                }
+                else if (!input.files[0]) {
+                alert("Please select a file before clicking 'Load'");
+                }
+                const formData = new FormData();
 				formData.append('image', input.files[0]);
 				$.ajax({
 					type: 'POST',
@@ -55,14 +71,14 @@
 					success: function(data){
 						console.log("response received success");
 						console.log(data);
-						$('.div_imagetranscrits').html('<img src="data:image/png;base64,' + data['encoded_img'] + '" />');
+						$('.div_imagetranscrits').html('<img src="data:image/png;base64,' + data['encoded_img'] + '" style = "width: 500px"/>');
                         document.getElementById("download").disabled = false;
 					},
 					cache: false,
-	        contentType: false,
-	        processData: false,
-				})
-			})
+                    contentType: false,
+                    processData: false,
+                    })
+                })
 		})
 
 	</script>

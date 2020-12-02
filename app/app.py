@@ -4,6 +4,10 @@ from LZW import LZW
 import io
 from base64 import encodebytes
 from PIL import Image
+import json
+import mimetypes
+import glob
+from flask import send_file, safe_join
 
 app = Flask(__name__, static_url_path = "/")
 app.config['SECRET_KEY'] = 'dcdfbdgdvscdvfbdvs'
@@ -13,6 +17,22 @@ app.config['uploads'] = "static/uploads"
 @app.route('/')
 def index():
 	return render_template('index.html')
+
+@app.route('/download/', methods = ["POST", "GET"])
+def download():
+    if request.method == "GET":
+        # data = json.loads(request.data.decode(encoding='UTF-8'))
+        # json_data = json.loads(str(request.data, encoding='utf-8'))
+        # print(json_data)
+        fl_path = "CompressedFiles/"
+        filename = 'downloaded_file_name.lzw'
+        rt = glob.glob(os.path.join(fl_path, '*.lzw'))
+        print(rt)
+        # fl = open(rt[0], 'r')
+        mime_type, _ = mimetypes.guess_type(fl_path)
+        return send_file(fl_path + rt[0].split('/')[1], as_attachment=True)
+        # response = HttpResponse(fl, content_type=mime_type)
+        # response['Content-Disposition'] = "attachment; filename=%s" % filename
 
 @app.route('/compress/', methods = ["POST", "GET"])
 def compress():
