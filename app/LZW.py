@@ -8,10 +8,7 @@ class LZW:
         self.compressionDictionary, self.compressionIndex = self.createCompressionDict()
         self.decompressionDictionary, self.decompressionIndex = self.createDecompressionDict()
     
-    ''''''
-    ''' --------------------- Compression of the Image --------------------- '''
-    ''''''
-
+   
     def compress(self):
         self.initCompress()
         compressedcColors = []
@@ -53,10 +50,6 @@ class LZW:
             compressedRow = compressedRow + str(self.compressionDictionary[currentString])
             compressedColor.append(compressedRow)
         return compressedColor
-
-    ''''''
-    ''' --------------------- Deompression of the Image --------------------- '''
-    ''''''
 
     def decompress(self):
         print("Decompressing File ...")
