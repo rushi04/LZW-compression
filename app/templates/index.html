@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Image Compressor</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+</head>
+<body>
+	<h1>Image Compress hone jaa raha hai saavdhan</h1>
+	<input type="file" id="fileupload" name="image" accept="image/*"/>
+	<img id="blah" src="#" alt="your image" />
+	<button id="compress">Compress</button>
+	<div class="div_imagetranscrits"></div>
+
+	<script type="text/javascript">
+		const handleImageUpload = event => {
+			const files = event.target.files;
+
+			if (event.target.files && event.target.files[0]) {
+			    var reader = new FileReader();
+			    reader.onload = function(e) {
+			      $('#blah').attr('src', e.target.result);
+			    }
+			    reader.readAsDataURL(event.target.files[0]); // convert to base64 string
+			  }
+		}
+
+		document.querySelector('#fileupload').addEventListener('change', event => {
+			handleImageUpload(event);
+		});
+
+		$(document).ready(function() {
+			$("#compress").click(function(){
+				if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+          alert('The File APIs are not fully supported in this browser.');
+          return;
+        }
+
+				var input = document.getElementById('fileupload');
+				if (!input) {
+          alert("Um, couldn't find the fileinput element.");
+        }
+        else if (!input.files) {
+          alert("This browser doesn't seem to support the `files` property of file inputs.");
+        }
+        else if (!input.files[0]) {
+          alert("Please select a file before clicking 'Load'");
+        }
+        const formData = new FormData();
+				formData.append('image', input.files[0]);
+				$.ajax({
+					type: 'POST',
+					url: '/compress/',
+					data: formData,
+					success: function(data){
+						console.log("response received success");
+						console.log(data);
+						$('.div_imagetranscrits').html('<img src="data:image/png;base64,' + data['encoded_img'] + '" />');
+					},
+					cache: false,
+	        contentType: false,
+	        processData: false,
+				})
+			})
+		})
+
+	</script>
+</body>
+</html>
