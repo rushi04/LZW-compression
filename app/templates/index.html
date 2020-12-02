@@ -8,7 +8,8 @@
 	<h1>Image Compress hone jaa raha hai saavdhan</h1>
 	<input type="file" id="fileupload" name="image" accept="image/*"/>
 	<img id="blah" src="#" alt="your image" />
-	<button id="compress">Compress</button>
+    <button id="compress">Compress</button>
+    <button id="download" disabled = true>Download compressed file</button>
 	<div class="div_imagetranscrits"></div>
 
 	<script type="text/javascript">
@@ -55,6 +56,7 @@
 						console.log("response received success");
 						console.log(data);
 						$('.div_imagetranscrits').html('<img src="data:image/png;base64,' + data['encoded_img'] + '" />');
+                        document.getElementById("download").disabled = false;
 					},
 					cache: false,
 	        contentType: false,

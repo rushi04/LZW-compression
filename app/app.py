@@ -34,7 +34,7 @@ def get_response_image(image_path):
     compressor = LZW(image_path)
     compressor.compress()
 
-    decompressor = LZW("CompressedFiles/" +filesplit1[2] +"Compressed.lzw")
+    decompressor = LZW("CompressedFiles/" + filesplit1[2] + "Compressed.lzw")
     encoded_img = decompressor.decompress()
     
     pil_img = Image.open("DecompressedFiles/" + filesplit1[2] + "Decompressed.jpg", mode='r') # reads the PIL image
